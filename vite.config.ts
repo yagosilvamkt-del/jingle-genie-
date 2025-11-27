@@ -1,16 +1,12 @@
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig } from 'vite' // Removido 'loadEnv'
 import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, (process as any).cwd(), '');
+  // A Vercel cuida da variável de ambiente para a pasta /api automaticamente.
+  // Não precisamos carregar ou injetar variáveis aqui para o frontend.
   return {
     plugins: [react()],
-    define: {
-      // Isso permite que o código que usa process.env.API_KEY funcione no Vite
-      'process.env.API_KEY': JSON.stringify(env.API_KEY),
-      // Adicione um fallback vazio para evitar crash se a variável não existir
-      'process.env': {}
-    }
+    // Removido o objeto 'define' que causava o erro ao tentar injetar 'process.env.API_KEY' no frontend.
   }
 })
